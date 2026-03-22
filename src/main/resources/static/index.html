@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Trade Sandbox</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 60px auto; }
+        button { padding: 10px 20px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; }
+        #result { margin-top: 20px; padding: 16px; background: #f4f4f4; border-radius: 4px; word-break: break-all; display: none; }
+    </style>
+</head>
+<body>
+<h2>📈 Stock Trade Sandbox</h2>
+
+<button onclick="fetchToken()">Get KIS Access Token</button>
+<div id="result"></div>
+
+<script>
+    async function fetchToken() {
+        const result = document.getElementById('result');
+        result.style.display = 'block';
+        result.innerText = 'Loading...';
+
+        try {
+            const res = await fetch('/kis/token');
+            const token = await res.text();
+            result.innerText = '✅ Token: ' + token;
+        } catch (e) {
+            result.innerText = '❌ Error: ' + e.message;
+        }
+    }
+</script>
+</body>
+</html>
