@@ -1,0 +1,16 @@
+kis:
+  app-key: PSn0Re9QYwvcMPij3TIEto5VRxs2HCWmUfaL
+  app-secret: FE72su0/nyxhk4V8Yj+a7xrjbGtoY+nwQUi3pIhhAndIl9syv/4xIZkdoYpbp4W44u64kdPW3kWfSyEaTAzrZQb7HwxNB+5O9fsEeQQYEKdCpN2o5DhSu8G729REzjXzeP7g0B4B1nidEpzXdy7iC1+e1RAxe+56BOqxs+sdsiVaqjXeUbE=
+  base-url: https://openapivts.koreainvestment.com:29443  # 모의투자 URL
+
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/stock_trade
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
