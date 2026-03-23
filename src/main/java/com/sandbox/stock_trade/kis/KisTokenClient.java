@@ -11,8 +11,13 @@ import java.util.Map;
 public class KisTokenClient {
 
     private final KisConfig kisConfig;
+    private String cachedToken = null;
 
     public String fetchAccessToken() {
+        if (cachedToken != null) {
+            return cachedToken;
+        }
+
         WebClient client = WebClient.create(kisConfig.getBaseUrl());
 
         KisTokenResponse response = client.post()
@@ -27,6 +32,7 @@ public class KisTokenClient {
                 .bodyToMono(KisTokenResponse.class)
                 .block();
 
-        return response.getAccessToken();
+        cachedToken = response.getAccessToken();
+        return cachedToken;
     }
 }
