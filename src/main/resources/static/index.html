@@ -5,26 +5,64 @@
     <title>Stock Trade Sandbox</title>
     <style>
         body { font-family: sans-serif; max-width: 600px; margin: 60px auto; }
-        button { padding: 10px 20px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; }
-        #result { margin-top: 20px; padding: 16px; background: #f4f4f4; border-radius: 4px; word-break: break-all; display: none; }
+        button { padding: 10px 20px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; margin: 4px; }
+        input { padding: 8px; margin: 4px; border: 1px solid #ccc; border-radius: 4px; width: 200px; }
+        .result { margin-top: 20px; padding: 16px; background: #f4f4f4; border-radius: 4px; word-break: break-all; display: none; }
     </style>
 </head>
 <body>
 <h2>📈 Stock Trade Sandbox</h2>
 
-<button onclick="fetchToken()">Get KIS Access Token</button>
-<div id="result"></div>
+<h3>Token</h3>
+<button onclick="fetchToken()">Get Access Token</button>
+<div id="tokenResult" class="result"></div>
+
+<h3>Balance</h3>
+<input id="accountNo" placeholder="계좌번호 (예: 50178507)" />
+<input id="productCode" placeholder="상품코드 (예: 01)" />
+<button onclick="fetchBalance()">Get Balance</button>
+<div id="balanceResult" class="result"></div>
+
+<h3>Current Price</h3>
+<input id="stockCode" placeholder="종목코드 (예: 005930)" />
+<button onclick="fetchPrice()">Get Current Price</button>
+<div id="priceResult" class="result"></div>
 
 <script>
     async function fetchToken() {
-        const result = document.getElementById('result');
+        const result = document.getElementById('tokenResult');
         result.style.display = 'block';
         result.innerText = 'Loading...';
-
         try {
             const res = await fetch('/kis/token');
-            const token = await res.text();
-            result.innerText = '✅ Token: ' + token;
+            result.innerText = '✅ Token: ' + await res.text();
+        } catch (e) {
+            result.innerText = '❌ Error: ' + e.message;
+        }
+    }
+
+async function fetchBalance() {
+    const accountNo = document.getElementById('accountNo').value;
+    const productCode = document.getElementById('productCode').value;
+    const result = document.getElementById('balanceResult');
+    result.style.display = 'block';
+    result.innerText = 'Loading...';
+    try {
+        const res = await fetch(`/kis/balance?accountNo=${accountNo}&productCode=${productCode}`);
+        result.innerText = JSON.stringify(await res.json(), null, 2);
+    } catch (e) {
+        result.innerText = '❌ Error: ' + e.message;
+    }
+}
+
+    async function fetchPrice() {
+        const stockCode = document.getElementById('stockCode').value;
+        const result = document.getElementById('priceResult');
+        result.style.display = 'block';
+        result.innerText = 'Loading...';
+        try {
+            const res = await fetch(`/kis/price?stockCode=${stockCode}`);
+            result.innerText = JSON.stringify(await res.json(), null, 2);
         } catch (e) {
             result.innerText = '❌ Error: ' + e.message;
         }
