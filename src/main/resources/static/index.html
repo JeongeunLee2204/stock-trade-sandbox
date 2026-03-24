@@ -68,5 +68,50 @@ async function fetchBalance() {
         }
     }
 </script>
+
+<h3>Auto Trading</h3>
+<button onclick="triggerTrading()">🔍 Check Condition</button>
+<button onclick="buyOne()" style="background:#2196F3;">🟢 Buy 1 Share</button>
+<button onclick="sellOne()" style="background:#f44336;">🔴 Sell 1 Share</button>
+<div id="tradingResult" class="result"></div>
+
+<script>
+    async function triggerTrading() {
+        const result = document.getElementById('tradingResult');
+        result.style.display = 'block';
+        result.innerText = 'Loading...';
+        try {
+            const res = await fetch('/kis/trade/trigger', { method: 'POST' });
+            result.innerText = '✅ ' + await res.text();
+        } catch (e) {
+            result.innerText = '❌ Error: ' + e.message;
+        }
+    }
+
+    async function buyOne() {
+        const result = document.getElementById('tradingResult');
+        result.style.display = 'block';
+        result.innerText = 'Loading...';
+        try {
+            const res = await fetch('/kis/trade/buy', { method: 'POST' });
+            result.innerText = JSON.stringify(await res.json(), null, 2);
+        } catch (e) {
+            result.innerText = '❌ Error: ' + e.message;
+        }
+    }
+
+    async function sellOne() {
+        const result = document.getElementById('tradingResult');
+        result.style.display = 'block';
+        result.innerText = 'Loading...';
+        try {
+            const res = await fetch('/kis/trade/sell', { method: 'POST' });
+            result.innerText = JSON.stringify(await res.json(), null, 2);
+        } catch (e) {
+            result.innerText = '❌ Error: ' + e.message;
+        }
+    }
+</script>
+
 </body>
 </html>

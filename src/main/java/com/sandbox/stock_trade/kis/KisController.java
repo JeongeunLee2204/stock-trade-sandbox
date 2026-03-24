@@ -1,10 +1,7 @@
 package com.sandbox.stock_trade.kis;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/kis")
@@ -28,5 +25,32 @@ public class KisController {
     @GetMapping("/price")
     public KisCurrentPriceResponse getCurrentPrice(@RequestParam String stockCode) {
         return kisStockClient.fetchCurrentPrice(stockCode);
+    }
+    private final AutoTradingScheduler autoTradingScheduler;
+
+    @PostMapping("/trade/trigger")
+    public String triggerTrading() {
+        autoTradingScheduler.checkAndTrade();
+        return "Trading check executed";
+    }
+
+    @PostMapping("/trade/buy")
+    public KisOrderResponse buyOne() {
+        return kisOrderClient.buy(
+                AutoTradingScheduler.ACCOUNT_NO,
+                AutoTradingScheduler.PRODUCT_CODE,
+                AutoTradingScheduler.STOCK_CODE,
+                "1", "0"  // 수량 1주, 가격 0 = 시장가
+        );
+    }
+
+    @PostMapping("/trade/sell")
+    public KisOrderResponse sellOne() {
+        return kisOrderClient.sell(
+                AutoTradingScheduler.ACCOUNT_NO,
+                AutoTradingScheduler.PRODUCT_CODE,
+                AutoTradingScheduler.STOCK_CODE,
+                "1", "0"  // 수량 1주, 가격 0 = 시장가
+        );
     }
 }
