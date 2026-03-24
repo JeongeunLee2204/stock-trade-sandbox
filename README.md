@@ -1,3 +1,5 @@
+<img width="640" height="382" alt="image" src="https://github.com/user-attachments/assets/40717b51-4392-4e60-ae66-dd1ba4103c73" />
+
 # 📈 stock-trade-sandbox
 
 Sandbox for an automated stock trading system.  
