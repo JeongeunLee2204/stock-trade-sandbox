@@ -26,23 +26,21 @@ public class AutoTradingScheduler {
         checkAndTrade();
     }
 
-    public void checkAndTrade() {
+    public String checkAndTrade() {
         KisCurrentPriceResponse priceResponse = kisStockClient.fetchCurrentPrice(STOCK_CODE);
         long currentPrice = Long.parseLong(priceResponse.getOutput().getCurrentPrice());
         log.info("Current price of {}: {}", STOCK_CODE, currentPrice);
 
         if (currentPrice <= BUY_THRESHOLD) {
-            log.info("Buy condition met. Executing buy order.");
             KisOrderResponse response = kisOrderClient.buy(ACCOUNT_NO, PRODUCT_CODE, STOCK_CODE, "1", String.valueOf(currentPrice));
-            log.info("Buy order result: {}", response.getMessage());
+            return "매수 실행 - 현재가: " + currentPrice + "원 / " + response.getMessage();
 
         } else if (currentPrice >= SELL_THRESHOLD) {
-            log.info("Sell condition met. Executing sell order.");
             KisOrderResponse response = kisOrderClient.sell(ACCOUNT_NO, PRODUCT_CODE, STOCK_CODE, "1", String.valueOf(currentPrice));
-            log.info("Sell order result: {}", response.getMessage());
+            return "매도 실행 - 현재가: " + currentPrice + "원 / " + response.getMessage();
 
         } else {
-            log.info("No condition met. Current price: {}", currentPrice);
+            return "조건 미충족 - 현재가: " + currentPrice + "원 (매수 기준: " + BUY_THRESHOLD + "원 이하 / 매도 기준: " + SELL_THRESHOLD + "원 이상)";
         }
     }
 }

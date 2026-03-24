@@ -10,6 +10,7 @@ public class KisController {
 
     private final KisTokenClient kisTokenClient;
     private final KisStockClient kisStockClient;
+    private final KisOrderClient kisOrderClient;
 
     @GetMapping("/token")
     public String getToken() {
@@ -30,8 +31,7 @@ public class KisController {
 
     @PostMapping("/trade/trigger")
     public String triggerTrading() {
-        autoTradingScheduler.checkAndTrade();
-        return "Trading check executed";
+        return autoTradingScheduler.checkAndTrade();
     }
 
     @PostMapping("/trade/buy")
